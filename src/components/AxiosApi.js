@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
 import axios from 'axios';
 
-const GetCustomers = () => {
-  axios.get('https://customerrest.herokuapp.com/api')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+const url = 'https://customerrest.herokuapp.com/';
+
+export const getCustomers = () => {
+    return axios.get(`${url}api/customers`)
 }
-export default GetCustomers;
+
+export const getTraining = () => {
+    return axios.get(`${url}api/trainings`)
+}

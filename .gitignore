@@ -11,6 +11,9 @@
 # production
 /build
 
+# AxiosApi.js api calls removed for safety reasons
+/src/components/AxiosApi.js
+
 # misc
 .DS_Store
 .env.local
