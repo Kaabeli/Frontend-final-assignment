@@ -49,17 +49,6 @@ export default class TrainingList extends Component {
                   Header: 'Activity',
                   accessor: 'activity'
               }]
-      }, {
-          Header: 'Customer',
-          columns: [
-              {
-                  Header: 'Firstname',
-                  accessor: 'customer.firstname'
-              }, {
-                  Header: 'Lastname',
-                  accessor: 'customer.lastname'
-              }, 
-          ]
       }]
     return (
         <div id="trainings">
