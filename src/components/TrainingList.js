@@ -3,6 +3,7 @@ import { getTraining, deleteTraining } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import moment from 'moment';
+import Button from 'react-bootstrap/Button'
 
 export default class TrainingList extends Component {
     constructor(props) {
@@ -21,7 +22,8 @@ export default class TrainingList extends Component {
     getTraining = () => {
         getTraining()
         .then((response) => {
-            let data = response.data.content
+            console.log("lol: ", response)
+            let data = response.data
             data.forEach(trainings => trainings.date = moment(trainings.data).format("DD/MM/YYYY"))
             this.setState({
                 trainings: data,
@@ -35,6 +37,7 @@ export default class TrainingList extends Component {
     }
 
     deleteTraining = training => {
+        console.log("Mitäs: ", training)
         if (window.confirm("Are you sure you want to delete training?")) {
             deleteTraining(training)
             .then(res => this.getTraining())
@@ -73,12 +76,14 @@ export default class TrainingList extends Component {
                   filterable: false,
                   sortable: false,
                   width: 90,
-                  accessor: 'links.0.href',
-                  Cell: ({ value }) => (
-                      <button type="button" className="btn btn-danger" onClick={() => this.deleteTraining(value)}>Delete</button> 
+                  accessor: 'links.self.href',
+                  Cell: ({ original }) => {
+                  console.log("lol2 :", original)
+                  return (
+                      <Button variant="outline-danger" onClick={() => this.deleteTraining(original.id)}>Delete</Button>
                   )
               }
-            
+              }
             ]
       }]
     return (

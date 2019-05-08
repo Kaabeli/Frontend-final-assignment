@@ -8,8 +8,8 @@ export const getCustomers = () => {
     return axios.get(`${url}api/customers`)
 }
 
-export const deleteCustomer = (data) => {
-    return axios.delete(data);
+export const deleteCustomer = (id) => {
+    return axios.delete(id);
 }
 
 export const addCustomer = (data) => {
@@ -19,7 +19,7 @@ export const addCustomer = (data) => {
 
 //TRAINING CALLS
 export const getTraining = () => {
-    return axios.get(`${url}api/trainings`);
+    return axios.get(`${url}gettrainings`);
 }
 
 export const deleteTraining = (id) => {

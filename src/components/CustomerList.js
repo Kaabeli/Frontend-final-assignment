@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { getCustomers, deleteCustomer } from './AxiosApi';
+import { getCustomers, deleteCustomer, addCustomer } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { Button } from 'react-bootstrap';
 
 export default class CustomerList extends Component {
     constructor(props) {
@@ -33,6 +34,7 @@ export default class CustomerList extends Component {
 
     deleteCustomer = customer => {
         if(window.confirm("Are you sure you want to delete customer?")) {
+            console.log("Logging this: ", customer)
             deleteCustomer(customer)
             .then(res => this.getCustomers())
             .then(res => this.setState({
@@ -41,6 +43,16 @@ export default class CustomerList extends Component {
             }))
             .catch(err => console.log("Tapahtuipi poistossa erhe:", err))
         }
+    }
+
+    addCustomer = newCustomer => {
+        addCustomer(newCustomer)
+        .then(res => this.getCustomers())
+        .then(res => this.setState({
+            open: true,
+            message: 'New customer added'
+        }))
+        .catch(err => console.log("Voihan pylly! Tapahtuipi virhe lisäyksessä: ", err))
     }
 
     handleClose = (event, reason) => {
@@ -87,11 +99,14 @@ export default class CustomerList extends Component {
                     filterable: false,
                     sortable: false,
                     width: 90,
-                    accessor: 'links.self.href',
-                    Cell: ({ value }) => (
-                        <button type="button" className="btn btn-danger" onClick={() => this.deleteCustomer(value)}>Delete</button>
+                    accessor: 'original.link[0].href',
+                    Cell: ({ original  }) => {
+                        console.log("lol3: ", original)
+                        return (
+                        <Button variant="outline-danger" onClick={() => this.deleteCustomer(original.links[0].href)}>Delete</Button>
                     )
                 }
+            }
 
             ]
         }]
