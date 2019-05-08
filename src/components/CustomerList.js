@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { getCustomers, deleteCustomer } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import moment from 'moment';
 
 export default class CustomerList extends Component {
     constructor(props) {
@@ -32,7 +31,7 @@ export default class CustomerList extends Component {
             })
     }
 
-    deleteCustomer = (customer) => {
+    deleteCustomer = customer => {
         if(window.confirm("Are you sure you want to delete customer?")) {
             deleteCustomer(customer)
             .then(res => this.getCustomers())
@@ -88,7 +87,7 @@ export default class CustomerList extends Component {
                     filterable: false,
                     sortable: false,
                     width: 90,
-                    accessor: 'links.0.href',
+                    accessor: 'links.self.href',
                     Cell: ({ value }) => (
                         <button type="button" className="btn btn-danger" onClick={() => this.deleteCustomer(value)}>Delete</button>
                     )
