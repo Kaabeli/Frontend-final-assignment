@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getCustomers } from './AxiosApi';
+import { getCustomers, deleteCustomer } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import moment from 'moment';
@@ -9,6 +9,8 @@ export default class CustomerList extends Component {
         super(props);
         this.state = {
             customers: [],
+            open: false,
+            message: '',
         }
     }
 
@@ -20,7 +22,6 @@ export default class CustomerList extends Component {
         getCustomers()
             .then((response) => {
                 let data = response.data.content;
-                data.forEach(trainings => trainings.date = moment(trainings.data).format("DD/MM/YYYY"))
                 this.setState({
                     customers: data,
                 })
@@ -29,6 +30,24 @@ export default class CustomerList extends Component {
                 console.log("Sattuupi virhe noissa asiakkaissa sitten:", error);
 
             })
+    }
+
+    deleteCustomer = (customer) => {
+        if(window.confirm("Are you sure you want to delete customer?")) {
+            deleteCustomer(customer)
+            .then(res => this.getCustomers())
+            .then(res => this.setState({
+                open: true,
+                message: "Customer removed"
+            }))
+            .catch(err => console.log("Tapahtuipi poistossa erhe:", err))
+        }
+    }
+
+    handleClose = (event, reason) => {
+        this.setState({
+            open: false,
+        })
     }
 
 
@@ -63,7 +82,18 @@ export default class CustomerList extends Component {
                 {
                     Header: 'City',
                     accessor: 'city'
+                },
+                {
+                    Header: '',
+                    filterable: false,
+                    sortable: false,
+                    width: 90,
+                    accessor: 'links.0.href',
+                    Cell: ({ value }) => (
+                        <button type="button" className="btn btn-danger" onClick={() => this.deleteCustomer(value)}>Delete</button>
+                    )
                 }
+
             ]
         }]
 
