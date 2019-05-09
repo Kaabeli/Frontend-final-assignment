@@ -12,8 +12,8 @@ export const deleteCustomer = (id) => {
     return axios.delete(id);
 }
 
-export const addCustomer = (data) => {
-    return axios.post(`${url}api/customers`, data);
+export const addCustomer = (newCustomer) => {
+    return axios.post(`${url}api/customers`, newCustomer);
 }
 
 
@@ -26,6 +26,6 @@ export const deleteTraining = (id) => {
     return axios.delete(`${url}api/trainings/${id}`);
 }
 
-export const addTraining = (data) => {
-    return axios.post(`${url}api/trainings`, data);
+export const addTraining = (newTraining) => {
+    return axios.post(`${url}api/trainings`, newTraining);
 }

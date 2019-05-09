@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { getCustomers, deleteCustomer, addCustomer } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Button } from 'react-bootstrap';
+import { Button, Collapse } from 'react-bootstrap';
+import NewCustomer from './NewCustomer';
 
 export default class CustomerList extends Component {
     constructor(props) {
@@ -10,7 +11,7 @@ export default class CustomerList extends Component {
         this.state = {
             customers: [],
             open: false,
-            message: '',
+            openCustomerButton: false,
         }
     }
 
@@ -32,37 +33,29 @@ export default class CustomerList extends Component {
             })
     }
 
-    deleteCustomer = customer => {
-        if(window.confirm("Are you sure you want to delete customer?")) {
-            console.log("Logging this: ", customer)
-            deleteCustomer(customer)
+    addCustomer = newCustomer => {
+        addCustomer(newCustomer)
             .then(res => this.getCustomers())
             .then(res => this.setState({
                 open: true,
-                message: "Customer removed"
             }))
-            .catch(err => console.log("Tapahtuipi poistossa erhe:", err))
+            .catch(err => console.log("Voihan pylly! Tapahtuipi virhe lisäyksessä: ", err))
+    }
+
+    deleteCustomer = customer => {
+        if (window.confirm("Are you sure you want to delete customer?")) {
+            console.log("Logging this: ", customer)
+            deleteCustomer(customer)
+                .then(res => this.getCustomers())
+                .then(res => this.setState({
+                    open: true,
+                }))
+                .catch(err => console.log("Tapahtuipi poistossa erhe:", err))
         }
     }
 
-    addCustomer = newCustomer => {
-        addCustomer(newCustomer)
-        .then(res => this.getCustomers())
-        .then(res => this.setState({
-            open: true,
-            message: 'New customer added'
-        }))
-        .catch(err => console.log("Voihan pylly! Tapahtuipi virhe lisäyksessä: ", err))
-    }
-
-    handleClose = (event, reason) => {
-        this.setState({
-            open: false,
-        })
-    }
-
-
     render() {
+        const { openCustomerButton } = this.state;
         const columns = [{
             Header: 'Customers',
             columns: [
@@ -100,26 +93,47 @@ export default class CustomerList extends Component {
                     sortable: false,
                     width: 90,
                     accessor: 'original.link[0].href',
-                    Cell: ({ original  }) => {
-                        console.log("lol3: ", original)
+                    Cell: ({ original }) => {
                         return (
-                        <Button variant="outline-danger" onClick={() => this.deleteCustomer(original.links[0].href)}>Delete</Button>
-                    )
+                            <Button variant="outline-danger" onClick={() => this.deleteCustomer(original.links[0].href)}>Delete</Button>
+                        )
+                    }
                 }
-            }
 
             ]
         }]
 
         return (
-            <div id="customers">
-                <ReactTable
-                    data={this.state.customers}
-                    defaultPageSize={15}
-                    filterable={true}
-                    columns={columns}
-                    className="-striped -highlight"
-                />
+            <div>
+                <div className="button-place">
+                <br />
+                    <Button
+                        variant="outline-secondary"
+                        onClick={() => this.setState({ 
+                            openCustomerButton: !openCustomerButton,
+                         })}
+                        aria-controls="addCustomer"
+                        aria-expanded={openCustomerButton}
+                    >{this.state.openCustomerButton ? 'Cancel' : 'Add Customer'}
+                </Button>
+
+                    <Collapse in={this.state.openCustomerButton}>
+                        <div id="addCustomer">
+                            <NewCustomer />
+                        </div>
+                    </Collapse>
+
+                    <hr />
+                </div>
+                <div id="customers">
+                    <ReactTable
+                        data={this.state.customers}
+                        defaultPageSize={15}
+                        filterable={true}
+                        columns={columns}
+                        className="-striped -highlight"
+                    />
+                </div>
             </div>
         )
     }

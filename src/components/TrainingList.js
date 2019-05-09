@@ -4,6 +4,8 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import moment from 'moment';
 import Button from 'react-bootstrap/Button'
+import { Collapse } from 'react-bootstrap';
+import NewTraining from './NewTraining';
 
 export default class TrainingList extends Component {
     constructor(props) {
@@ -12,6 +14,7 @@ export default class TrainingList extends Component {
             trainings: [],
             open: false,
             message: '',
+            openTrainingButton: false,
         }
     }
 
@@ -28,7 +31,6 @@ export default class TrainingList extends Component {
             this.setState({
                 trainings: data,
             })
-            console.log("Treenit:", data);
         })
         .catch((error) => {
             console.log("Sattuupi tuota virhe:", error);
@@ -37,7 +39,6 @@ export default class TrainingList extends Component {
     }
 
     deleteTraining = training => {
-        console.log("Mitäs: ", training)
         if (window.confirm("Are you sure you want to delete training?")) {
             deleteTraining(training)
             .then(res => this.getTraining())
@@ -56,12 +57,18 @@ export default class TrainingList extends Component {
     }
 
   render() {
+      const { openTrainingButton} = this.state;
       const columns = [{
           Header: 'Training',
           columns: [
               {
                   Header: 'Date',
                   accessor: 'date'
+              },
+              {
+                id: 'customer.id',
+                Header: 'Customer',
+                accessor: data => `${data.customer.firstname} ${data.customer.lastname}`
               },
               {
                   Header: 'Duration',
@@ -78,15 +85,31 @@ export default class TrainingList extends Component {
                   width: 90,
                   accessor: 'links.self.href',
                   Cell: ({ original }) => {
-                  console.log("lol2 :", original)
                   return (
                       <Button variant="outline-danger" onClick={() => this.deleteTraining(original.id)}>Delete</Button>
                   )
               }
               }
-            ]
+          ]
       }]
     return (
+        <div>
+            <div className="button-place">
+            <br />
+                <Button
+                variant="outline-secondary"
+                onClick={() => this.setState({
+                    openTrainingButton: !openTrainingButton,
+                })}
+                aria-controls="addTraining"
+                aria-expanded={openTrainingButton}>
+                {this.state.openTrainingButton ? 'Cancel' : 'Add Training for Customer'}</Button>
+
+                <Collapse in={this.state.openTrainingButton}>
+                <div id="AddTraining"><NewTraining /></div>
+                </Collapse>
+                <hr/>
+            </div>
         <div id="trainings">
             <ReactTable 
                 data={this.state.trainings}
@@ -96,6 +119,7 @@ export default class TrainingList extends Component {
                 className="-striped -highlight"
             />
         </div>
+        </div >
     )
   }
 }
