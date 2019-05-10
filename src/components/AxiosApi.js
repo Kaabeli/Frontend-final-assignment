@@ -16,6 +16,10 @@ export const addCustomer = (newCustomer) => {
     return axios.post(`${url}api/customers`, newCustomer);
 }
 
+export const updateCustomer = (editCustomer) => {
+    return axios.put(`${url}api/customers/`, editCustomer);
+}
+
 
 //TRAINING CALLS
 export const getTraining = () => {

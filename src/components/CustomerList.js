@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { getCustomers, deleteCustomer, addCustomer } from './AxiosApi';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Button, Collapse } from 'react-bootstrap';
+import { Button, Collapse, Row, Col } from 'react-bootstrap';
 import NewCustomer from './NewCustomer';
+import EditCustomer from './EditCustomer';
 
 export default class CustomerList extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ export default class CustomerList extends Component {
             customers: [],
             open: false,
             openCustomerButton: false,
+            openCustomerEdit: false,
         }
     }
 
@@ -56,6 +58,7 @@ export default class CustomerList extends Component {
 
     render() {
         const { openCustomerButton } = this.state;
+        const { openCustomerEdit } = this.state;
         const columns = [{
             Header: 'Customers',
             columns: [
@@ -106,20 +109,42 @@ export default class CustomerList extends Component {
         return (
             <div>
                 <div className="button-place">
-                <br />
-                    <Button
-                        variant="outline-secondary"
-                        onClick={() => this.setState({ 
-                            openCustomerButton: !openCustomerButton,
-                         })}
-                        aria-controls="addCustomer"
-                        aria-expanded={openCustomerButton}
-                    >{this.state.openCustomerButton ? 'Cancel' : 'Add Customer'}
-                </Button>
+                    <br />
+                    <Row>
+                        <Col>
+                            <Button
+                                variant="outline-secondary"
+                                onClick={() => this.setState({
+                                    openCustomerButton: !openCustomerButton,
+                                })}
+                                aria-controls="addCustomer"
+                                aria-expanded={openCustomerButton}
+                            >{this.state.openCustomerButton ? 'Hide' : 'Add Customer'}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="outline-secondary"
+                                onClick={() => this.setState({
+                                    openCustomerEdit: !openCustomerEdit,
+                                })}
+                                aria-controls="addCustomer"
+                                aria-expanded={openCustomerEdit}
+                            >{this.state.openCustomerEdit ? 'Hide' : 'Edit Customer'}
+                            </Button>
+                        
+                        </Col>
+                    </Row>
 
                     <Collapse in={this.state.openCustomerButton}>
                         <div id="addCustomer">
                             <NewCustomer />
+                        </div>
+                    </Collapse>
+
+                    <Collapse in={this.state.openCustomerEdit}>
+                        <div id="addCustomer">
+                            <EditCustomer />
                         </div>
                     </Collapse>
 

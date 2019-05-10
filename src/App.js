@@ -4,6 +4,7 @@ import './App.css';
 import TrainingList from './components/TrainingList';
 import CustomerList from './components/CustomerList';
 import { Nav, Container } from 'react-bootstrap';
+import Calendar from './components/Calendar';
 
 class App extends Component {
 
@@ -24,10 +25,14 @@ class App extends Component {
             <Nav.Item>
               <Nav.Link as={NavLink} to="/TrainingList">Training List</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link as={NavLink} to="/Calendar">Calendar</Nav.Link>
+            </Nav.Item>
           </Nav>
           <Route exact path="/" />
           <Route path="/TrainingList" component={TrainingList} />
           <Route path="/CustomerList" component={CustomerList} />
+          <Route path="/Calendar" component={Calendar}/>
 
         </BrowserRouter>
         </Container>

@@ -30,8 +30,7 @@ export default class NewCustomer extends Component {
       email: this.state.email,
       phone: this.state.phoneNumber,
     }
-    addCustomer(newCustomer);
-    console.log("Asiakasdata: ", newCustomer)
+    addCustomer(newCustomer)
   }
 
   render() {

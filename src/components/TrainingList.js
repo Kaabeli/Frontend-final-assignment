@@ -25,9 +25,10 @@ export default class TrainingList extends Component {
     getTraining = () => {
         getTraining()
         .then((response) => {
-            console.log("lol: ", response)
             let data = response.data
-            data.forEach(trainings => trainings.date = moment(trainings.data).format("DD/MM/YYYY"))
+            data.map((training, index) => {
+                return training.date = moment((training.date)).format('DD/MM/YYYY hh:mm');
+            })
             this.setState({
                 trainings: data,
             })
