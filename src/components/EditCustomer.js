@@ -64,6 +64,7 @@ export default class EditCustomer extends Component {
 
             <hr />
             <h5>Edit Customer</h5>
+            <p>Not part of the final work, so i'll finish this when I can...</p>
             <Form>
                 <Form.Group>
                     <Form.Label>Select Customer</Form.Label>
