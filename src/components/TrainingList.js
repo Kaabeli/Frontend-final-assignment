@@ -107,7 +107,11 @@ export default class TrainingList extends Component {
                 {this.state.openTrainingButton ? 'Cancel' : 'Add Training for Customer'}</Button>
 
                 <Collapse in={this.state.openTrainingButton}>
-                <div id="AddTraining"><NewTraining /></div>
+                <div id="AddTraining">
+                <NewTraining
+                getTraining={this.getTraining}
+                 />
+                </div>
                 </Collapse>
                 <hr/>
             </div>

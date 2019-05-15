@@ -11,7 +11,6 @@ export default class CustomerList extends Component {
         super(props);
         this.state = {
             customers: [],
-            open: false,
             openCustomerButton: false,
             openCustomerEdit: false,
         }
@@ -38,9 +37,6 @@ export default class CustomerList extends Component {
     addCustomer = newCustomer => {
         addCustomer(newCustomer)
             .then(res => this.getCustomers())
-            .then(res => this.setState({
-                open: true,
-            }))
             .catch(err => console.log("Voihan pylly! Tapahtuipi virhe lisäyksessä: ", err))
     }
 
@@ -49,9 +45,6 @@ export default class CustomerList extends Component {
             console.log("Logging this: ", customer)
             deleteCustomer(customer)
                 .then(res => this.getCustomers())
-                .then(res => this.setState({
-                    open: true,
-                }))
                 .catch(err => console.log("Tapahtuipi poistossa erhe:", err))
         }
     }
@@ -138,13 +131,17 @@ export default class CustomerList extends Component {
 
                     <Collapse in={this.state.openCustomerButton}>
                         <div id="addCustomer">
-                            <NewCustomer />
+                            <NewCustomer
+                            addCustomer={this.addCustomer} />
                         </div>
                     </Collapse>
 
                     <Collapse in={this.state.openCustomerEdit}>
                         <div id="addCustomer">
-                            <EditCustomer />
+                            <EditCustomer
+                            getCustomers={this.getCustomers}
+                            customerList={this.state.customers}
+                            />
                         </div>
                     </Collapse>
 

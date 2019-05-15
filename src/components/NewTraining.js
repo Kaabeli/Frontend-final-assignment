@@ -29,7 +29,6 @@ export default class NewTraining extends Component {
                 this.setState({
                     customers: data,
                 })
-               // console.log("Data: ", data);
             })
             .catch(function (error) {
                 console.log("Sattuupi virhe noissa asiakkaissa sitten:", error);
@@ -44,7 +43,8 @@ export default class NewTraining extends Component {
             duration: this.state.duration,
             customer: this.state.customer
         }
-        addTraining(newTraining);
+        addTraining(newTraining)
+        .then(this.props.getTraining)
     }
 
     render() {

@@ -23,7 +23,7 @@ export default class Calendar extends Component {
         getTraining()
             .then((response) => {
                 let data = response.data
-                data.filter((training) =>{
+                data.filter((training) => {
                     if (!training.customer) {
                         return false;
                     }
@@ -36,7 +36,7 @@ export default class Calendar extends Component {
             })
             .then(() => this.createEvents())
             .catch((error) => {
-                console.log("Sattuupi tuota virhe:", error);
+                console.log("Sattuupi tuota nimittäin eh... virhe:", error);
 
             })
     }
@@ -61,20 +61,20 @@ export default class Calendar extends Component {
         console.log("Eventit: ", this.state.events)
     }
 
-  render() {
+    render() {
 
-    return (
-      <div id="calendar">
-            <BigCalendar
-                showMultiDayTimes={true}
-                localizer={localizer}
-                events={this.state.events}
-                defaultDate={new Date()}
-                startAccessor="start"
-                endAccessor="end"
-                allDayAccessor="allDay"
-            />
-      </div>
-    )
-  }
+        return (
+            <div id="calendar">
+                <br />
+                <p>I have no idea why React Big Calendar doesn't show events by month :(</p>
+                <BigCalendar
+                    showMultiDayTimes={true}
+                    localizer={localizer}
+                    events={this.state.events}
+                    startAccessor="start"
+                    endAccessor="end"
+                />
+            </div>
+        )
+    }
 }

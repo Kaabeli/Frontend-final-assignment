@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, Col } from 'react-bootstrap';
-import { addCustomer } from './AxiosApi';
+
 
 export default class NewCustomer extends Component {
   constructor(props) {
@@ -30,7 +30,8 @@ export default class NewCustomer extends Component {
       email: this.state.email,
       phone: this.state.phoneNumber,
     }
-    addCustomer(newCustomer)
+    this.props.addCustomer(newCustomer)
+
   }
 
   render() {

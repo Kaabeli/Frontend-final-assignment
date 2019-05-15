@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getCustomers, updateCustomer } from './AxiosApi';
+import { updateCustomer } from './AxiosApi';
 import { Button, Form, Col } from 'react-bootstrap';
 
 export default class EditCustomer extends Component {
@@ -7,6 +7,7 @@ export default class EditCustomer extends Component {
         super(props);
         this.state = {
             customers: [],
+            selectedCustomer: '',
             firstName: '',
             lastName: '',
             streetAddress: '',
@@ -17,28 +18,9 @@ export default class EditCustomer extends Component {
         }
     }
 
-    componentWillMount() {
-        this.getCustomers();
-    }
-
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
-
-    getCustomers = () => {
-        getCustomers()
-            .then((response) => {
-                let data = response.data.content;
-                this.setState({
-                    customers: data,
-                })
-                //console.log("Data: ", data);
-            })
-            .catch(function (error) {
-                console.log("Sattuupi virhe noissa asiakkaissa sitten:", error);
-
-            })
-    } 
 
     editCustomerData = (e) => {
         const editCustomer = {
@@ -50,12 +32,13 @@ export default class EditCustomer extends Component {
             email: this.state.email,
             phone: this.state.phoneNumber,
         }
-        updateCustomer(editCustomer)
+        updateCustomer(this.state.selectedCustomer, editCustomer)
+        .then(this.props.getCustomers)
         console.log("Edit Customer: ", editCustomer);
     }
 
   render() {
-      const customers = this.state.customers.map((customer, index) =>
+     const customers = this.props.customerList.map((customer, index) =>
           <option key={index} value={customer.links[0].href}>{customer.firstname} {customer.lastname}</option>
       )
     return  (
@@ -64,11 +47,10 @@ export default class EditCustomer extends Component {
 
             <hr />
             <h5>Edit Customer</h5>
-            <p>Not part of the final work, so i'll finish this when I can...</p>
             <Form>
                 <Form.Group>
                     <Form.Label>Select Customer</Form.Label>
-                    <Form.Control as="select" onChange={(e) => this.setState({ customer: e.target.value })}>
+                    <Form.Control as="select" onChange={(e) => this.setState({ selectedCustomer: e.target.value })}>
                         <option>-- Select Customer --</option>
                         {customers}
                     </Form.Control>
